@@ -42,10 +42,23 @@ app.use((req, res, next) => {
 
 // MongoDB connection
 const mongoUrl = process.env.MONGO_URL;
+const jwtSecret = process.env.JWT_SECRET;
+
 if (!mongoUrl) {
   console.error('❌ MONGO_URL environment variable is not set');
   process.exit(1);
 }
+
+if (!jwtSecret) {
+  console.error('❌ JWT_SECRET environment variable is not set');
+  process.exit(1);
+}
+
+console.log('🔧 Environment check:');
+console.log('- NODE_ENV:', process.env.NODE_ENV);
+console.log('- PORT:', process.env.PORT);
+console.log('- MONGO_URL exists:', !!mongoUrl);
+console.log('- JWT_SECRET exists:', !!jwtSecret);
 
 mongoose.connect(mongoUrl)
   .then(() => console.log('✅ MongoDB connected'))
