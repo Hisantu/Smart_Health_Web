@@ -340,7 +340,7 @@ function PatientDashboard({ user, onLogout }) {
                     </div>
                   </div>
                 );
-              })}}}
+              })}
             </div>
           )}
         </motion.div>
