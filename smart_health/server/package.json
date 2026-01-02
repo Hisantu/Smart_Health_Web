@@ -6,6 +6,7 @@
     "start": "node src/index.js",
     "dev": "nodemon src/index.js",
     "seed": "node src/seed/seed.js",
+    "seed-users": "node src/seedUsers.js",
     "init-db": "node src/seed/init_db.js",
     "create-test-data": "node src/seed/create_test_data.js"
   },
