@@ -4,13 +4,27 @@ const User = require('../models/User');
 const memoryStore = require('../config/memoryStore');
 const router = express.Router();
 
+// Test endpoint
+router.get('/test', (req, res) => {
+  res.json({ 
+    message: 'Auth API is working', 
+    timestamp: new Date().toISOString(),
+    env: process.env.NODE_ENV,
+    hasJwtSecret: !!process.env.JWT_SECRET,
+    hasMongoUrl: !!process.env.MONGO_URL
+  });
+});
+
 router.post('/login', async (req, res) => {
   try {
     const { username, password } = req.body;
+    console.log('Login attempt:', { username, hasPassword: !!password });
+    console.log('JWT_SECRET exists:', !!process.env.JWT_SECRET);
     
     // Try MongoDB first
     try {
       const user = await User.findOne({ username });
+      console.log('User found in DB:', !!user);
       
       if (user && (await user.comparePassword(password))) {
         const token = jwt.sign(
@@ -18,10 +32,11 @@ router.post('/login', async (req, res) => {
           process.env.JWT_SECRET,
           { expiresIn: '24h' }
         );
+        console.log('MongoDB login successful for:', username);
         return res.json({ token, user: { id: user._id, username: user.username, role: user.role, name: user.name } });
       }
     } catch (dbError) {
-      console.log('MongoDB error, trying fallback auth');
+      console.log('MongoDB error:', dbError.message);
     }
     
     // Fallback: Simple credential check for testing
@@ -37,6 +52,7 @@ router.post('/login', async (req, res) => {
         process.env.JWT_SECRET,
         { expiresIn: '24h' }
       );
+      console.log('Fallback login successful for:', username);
       return res.json({ 
         token, 
         user: { 
@@ -48,8 +64,10 @@ router.post('/login', async (req, res) => {
       });
     }
 
+    console.log('Login failed for:', username);
     return res.status(401).json({ error: 'Invalid credentials' });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ error: error.message });
   }
 });
