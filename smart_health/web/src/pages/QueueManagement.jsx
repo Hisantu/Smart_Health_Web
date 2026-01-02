@@ -4,7 +4,15 @@ import { motion, AnimatePresence } from 'framer-motion';
 import api from '../api/axios';
 import io from 'socket.io-client';
 
-const socket = io(import.meta.env.VITE_API_URL?.replace('/api', '') || 'http://localhost:4000');
+// Use same origin in production, localhost in development
+const getSocketURL = () => {
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL.replace('/api', '');
+  }
+  return import.meta.env.PROD ? window.location.origin : 'http://localhost:4000';
+};
+
+const socket = io(getSocketURL());
 
 function QueueManagement() {
   const navigate = useNavigate();

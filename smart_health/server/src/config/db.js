@@ -4,15 +4,21 @@ const mongoose = require('mongoose');
 module.exports = () => {
   const url = process.env.MONGO_URL;
   if (!url) {
-    console.error('MONGO_URL not set in .env');
+    console.error('❌ MONGO_URL not set in environment variables');
     process.exit(1);
   }
   mongoose.set('strictQuery', false);
-  mongoose.connect(url, { dbName: 'smarthealth' })
+  
+  // If connection string doesn't have a database name, use 'smarthealth'
+  const connectionOptions = url.includes('/?') || url.includes('?') 
+    ? {} 
+    : { dbName: 'smarthealth' };
+  
+  mongoose.connect(url, connectionOptions)
     .then(() => console.log('✅ Connected to MongoDB'))
     .catch(err => {
       console.error('❌ MongoDB connection error:', err.message);
-      console.log('💡 Make sure MongoDB is running locally or check your connection string');
-      // Don't exit, let the server run without database for now
+      console.log('💡 Check your MONGO_URL connection string');
+      process.exit(1);
     });
 };
