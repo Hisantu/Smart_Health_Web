@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { API } from "../services/api"
+import api from "../api/axios"
 
 export default function AppointmentForm({ doctors, departments }) {
   const [patientPhone, setPhone] = useState("")
@@ -9,14 +9,14 @@ export default function AppointmentForm({ doctors, departments }) {
   const [slot, setSlot] = useState("")
 
   async function submit() {
-    const p = await API.post("/patients", {
+    const p = await api.post("/patients", {
       phone: patientPhone,
       name: patientName
     })
 
     const patientId = p.data.patient._id
 
-    const r = await API.post("/appointments/book", {
+    const r = await api.post("/appointments/book", {
       patientId,
       doctorId,
       deptId,

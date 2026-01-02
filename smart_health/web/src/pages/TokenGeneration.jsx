@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { API } from '../services/api';
+import api from '../api/axios';
 import PatientSelector from '../components/PatientSelector';
 
 function TokenGeneration() {
@@ -20,7 +20,7 @@ function TokenGeneration() {
 
   const fetchDepartments = async () => {
     try {
-      const { data } = await API.get('/departments');
+      const { data } = await api.get('/departments');
       setDepartments(data); // Show all departments, not just open ones
     } catch (error) {
       console.error('Failed to fetch departments:', error);
@@ -31,7 +31,7 @@ function TokenGeneration() {
     e.preventDefault();
     setLoading(true);
     try {
-      const { data } = await API.post('/tokens', {
+      const { data } = await api.post('/tokens', {
         patient: selectedPatient,
         department: selectedDepartment,
         priority

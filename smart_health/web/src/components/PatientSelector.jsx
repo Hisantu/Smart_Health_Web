@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { API } from '../services/api';
+import api from '../api/axios';
 
 export default function PatientSelector({ selectedPatient, onPatientSelect, showAddNew = true }) {
   const [patients, setPatients] = useState([]);
@@ -18,7 +18,7 @@ export default function PatientSelector({ selectedPatient, onPatientSelect, show
 
   const fetchPatients = async () => {
     try {
-      const { data } = await API.get('/patients');
+      const { data } = await api.get('/patients');
       setPatients(data);
     } catch (error) {
       console.error('Failed to fetch patients:', error);
@@ -28,7 +28,7 @@ export default function PatientSelector({ selectedPatient, onPatientSelect, show
   const handleAddPatient = async (e) => {
     e.preventDefault();
     try {
-      const { data } = await API.post('/patients', newPatient);
+      const { data } = await api.post('/patients', newPatient);
       setPatients([...patients, data]);
       onPatientSelect(data._id);
       setShowAddForm(false);
