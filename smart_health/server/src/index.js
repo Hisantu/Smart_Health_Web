@@ -1,4 +1,9 @@
-require('dotenv').config();
+// Load environment-specific .env file
+if (process.env.NODE_ENV === 'production') {
+  require('dotenv').config({ path: '.env.production' });
+} else {
+  require('dotenv').config();
+}
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -60,7 +65,9 @@ console.log('- PORT:', process.env.PORT);
 console.log('- MONGO_URL exists:', !!mongoUrl);
 console.log('- JWT_SECRET exists:', !!jwtSecret);
 
-mongoose.connect(mongoUrl)
+mongoose.connect(mongoUrl, {
+  dbName: 'smarthealth'
+})
   .then(() => console.log('✅ MongoDB connected'))
   .catch(err => {
     console.error('❌ MongoDB connection error:', err);
