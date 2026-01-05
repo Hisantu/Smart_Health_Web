@@ -8,6 +8,6 @@ services:
       - key: NODE_ENV
         value: production
       - key: MONGO_URL
-        value: mongodb+srv://santoshsantu92067_db_user:santosh1603@cluster1.j98wqmk.mongodb.net/smarthealth?retryWrites=true&w=majority&appName=Cluster1
+        value: mongodb+srv://santoshsantu92067_db_user:santosh1603@cluster1.j98wqmk.mongodb.net/?appName=Cluster1
       - key: JWT_SECRET
         value: SmartHealth2024_SecureJWT_ProductionKey_ChangeThis_RandomString123456
