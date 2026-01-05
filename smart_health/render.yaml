@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: smart-health-web
+    env: node
+    buildCommand: cd server && npm install && cd ../web && npm install && npm run build
+    startCommand: cd server && node index.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+      - key: MONGO_URL
+        value: mongodb+srv://santoshsantu92067_db_user:santu123@cluster1.j98wqmk.mongodb.net/smarthealth?retryWrites=true&w=majority&appName=Cluster1
+      - key: JWT_SECRET
+        value: SmartHealth2024_SecureJWT_ProductionKey_ChangeThis_RandomString123456
